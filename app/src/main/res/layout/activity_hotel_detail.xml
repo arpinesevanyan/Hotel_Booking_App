@@ -1,0 +1,271 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="hotel"
+            type="com.arpinesevanyan.hotelbookingapp.data.Hotel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            style="@style/ViewPagerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutHotelInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <LinearLayout
+            android:id="@+id/layoutHotelInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/aboutHotel"
+            app:layout_constraintTop_toBottomOf="@id/viewPager">
+
+            <TextView
+                android:id="@+id/textHotelName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{hotel.name}"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textHotelAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@{hotel.adress}"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
+
+            <RatingBar
+                android:id="@+id/ratingBarHotel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:numStars="1"
+                android:progressTint="@color/yellow"
+                android:rating="@{(float) (hotel.rating / 2)}" />
+
+            <TextView
+                android:id="@+id/textHotelPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{hotel.price_for_it}"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/aboutHotel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/layout1"
+            app:layout_constraintTop_toBottomOf="@id/layoutHotelInfo">
+
+            <TextView
+                android:id="@+id/textHotelDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{hotel.about_the_hotel.description}"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Характеристики гостиницы:"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textHotelPeculiarities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{hotel.about_the_hotel.peculiarities != null ? android.text.TextUtils.join(", ", hotel.about_the_hotel.peculiarities) : ""}'
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonChooseRoom"
+            tools:layout_editor_absoluteX="10dp">
+
+            <ImageView
+                android:id="@+id/iconStart3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_disabled"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/topText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart3"
+                android:text="Что не включено"
+                android:textColor="@color/text1_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/bottomTextAmenities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topText3"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart3"
+                android:text="Самое необходимое"
+                android:textColor="@color/text2_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iconEndAmenities"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_allow"
+                app:tint="@color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout3"
+            tools:layout_editor_absoluteX="0dp">
+
+            <ImageView
+                android:id="@+id/iconStart2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_check"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/topText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart2"
+                android:text="Что включено"
+                android:textColor="@color/text1_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/bottomText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topText2"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart2"
+                android:text="Самое необходимое"
+                android:textColor="@color/text2_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iconEnd2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_allow"
+                app:tint="@color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout2"
+            tools:layout_editor_absoluteX="0dp">
+
+            <ImageView
+                android:id="@+id/iconStart1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_satisfied"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/topText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart1"
+                android:text="Удобства"
+                android:textColor="@color/text1_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/bottomText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topText1"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/iconStart1"
+                android:text="Самое необходимое"
+                android:textColor="@color/text2_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iconEnd1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_allow"
+                app:tint="@color/black" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonChooseRoom"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="16dp"
+            android:text="К выбору номера"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

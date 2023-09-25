@@ -1,0 +1,224 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="hotel"
+            type="com.arpinesevanyan.hotelbookingapp.data.Hotel" />
+
+        <variable
+            name="booking"
+            type="com.arpinesevanyan.hotelbookingapp.data.BookingData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.RoomActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@{hotel.name}"
+            app:titleTextColor="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/line2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <RatingBar
+                android:id="@+id/hotelRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="1"
+                android:progressTint="@color/yellow"
+                android:rating="@{(float)(booking.horating / 2)}" />
+
+            <TextView
+                android:id="@+id/hotelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{booking.hotel_name}" />
+
+            <TextView
+                android:id="@+id/hotelAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{booking.hotel_adress}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/line3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line1">
+
+            <TextView
+                android:id="@+id/departureCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Вылет из" + booking.departure}' />
+
+            <TextView
+                android:id="@+id/arrivalCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Страна, город" + booking.arrival_country}' />
+
+            <TextView
+                android:id="@+id/bookingDates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Даты " + booking.tour_date_start + " - " + booking.tour_date_stop}' />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Кол-во ночей" + booking.number_of_nights}' />
+
+            <TextView
+                android:id="@+id/hotel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Отель" + booking.hotel_name}' />
+
+            <TextView
+                android:id="@+id/room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Номер" + booking.room}' />
+
+            <TextView
+                android:id="@+id/nutrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Питание" + booking.nutrition}' />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/line4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line2">
+
+            <EditText
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Номер телефона"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Адрес электронной почты"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/line5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line3">
+
+            <FrameLayout
+                android:id="@+id/touristContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/line4">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/touristsViewPager"
+                    android:layout_width="359dp"
+                    android:layout_height="wrap_content"
+                    android:text="Добавить туриста" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/addTouristButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_add_box"
+                    android:onClick="showTouristFormDialog" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/payButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line4">
+
+            <TextView
+                android:id="@+id/tourPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Тур " + String.valueOf(booking.tour_price)}' />
+
+            <TextView
+                android:id="@+id/fuelCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Топливный сбор" + booking.fuel_charge}' />
+
+            <TextView
+                android:id="@+id/serviceCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Сервисный сбор " + booking.service_charge}' />
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text=""
+                android:textColor="@color/button_color" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/payButton"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="16dp"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
