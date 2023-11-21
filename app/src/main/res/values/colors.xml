@@ -8,7 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="stroke">#FBFBFC</color>
-    <color name="yellow">#FFC107</color>
+    <color name="yellow">#FFA800</color>
+    <color name="yellowBackground">#FFF4CC</color>
     <color name="button_color">#3366FF</color>
     <color name="text1_color">#2C3035</color>
     <color name="text2_color">#828796</color>

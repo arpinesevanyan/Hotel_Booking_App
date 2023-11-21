@@ -1,17 +1,17 @@
-package com.arpinesevanyan.hotelbookingapp.model
+package com.arpinesevanyan.hotelbookingapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.arpinesevanyan.hotelbookingapp.api.Result
-import com.arpinesevanyan.hotelbookingapp.data.Hotel
-import com.arpinesevanyan.hotelbookingapp.repo.HotelRepository
+import com.arpinesevanyan.hotelbookingapp.model.network.Result
+import com.arpinesevanyan.hotelbookingapp.model.data.HotelData
+import com.arpinesevanyan.hotelbookingapp.model.repo.HotelRepository
 import kotlinx.coroutines.launch
 
 class HotelViewModel(private val repository: HotelRepository) : ViewModel() {
-    private val _hotelDetails = MutableLiveData<Result<Hotel>>()
-    val hotelDetails: LiveData<Result<Hotel>> = _hotelDetails
+    private val _hotelDetails = MutableLiveData<Result<HotelData>>()
+    val hotelDetails: LiveData<Result<HotelData>> = _hotelDetails
 
     fun loadHotelDetails(id: Int) {
         viewModelScope.launch {
@@ -29,5 +29,7 @@ class HotelViewModel(private val repository: HotelRepository) : ViewModel() {
         }
     }
 }
+
+
 
 

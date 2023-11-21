@@ -1,4 +1,4 @@
-package com.arpinesevanyan.hotelbookingapp.ui
+package com.arpinesevanyan.hotelbookingapp.view.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

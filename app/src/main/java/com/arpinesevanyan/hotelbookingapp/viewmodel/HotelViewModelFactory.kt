@@ -1,8 +1,8 @@
-package com.arpinesevanyan.hotelbookingapp.model
+package com.arpinesevanyan.hotelbookingapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.arpinesevanyan.hotelbookingapp.repo.HotelRepository
+import com.arpinesevanyan.hotelbookingapp.model.repo.HotelRepository
 
 class HotelViewModelFactory(private val repository: HotelRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

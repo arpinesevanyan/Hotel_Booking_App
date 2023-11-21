@@ -1,4 +1,4 @@
-package com.arpinesevanyan.hotelbookingapp.adapter
+package com.arpinesevanyan.hotelbookingapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.arpinesevanyan.hotelbookingapp.R
 import com.arpinesevanyan.hotelbookingapp.databinding.ItemImageSliderBinding
 import com.bumptech.glide.Glide
 
-class ImageSliderAdapter(private val imageUrls: List<String>) :
+class ImageSliderAdapter(private val imageUrls: List<String>?) :
     RecyclerView.Adapter<ImageSliderAdapter.ImageSliderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageSliderViewHolder {
@@ -19,12 +19,12 @@ class ImageSliderAdapter(private val imageUrls: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ImageSliderViewHolder, position: Int) {
-        val imageUrl = imageUrls[position]
-        holder.bind(imageUrl)
+        val imageUrl = imageUrls?.get(position)
+        imageUrl?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
-        return imageUrls.size
+        return imageUrls?.size ?: 0
     }
 
     inner class ImageSliderViewHolder(private val binding: ItemImageSliderBinding) :

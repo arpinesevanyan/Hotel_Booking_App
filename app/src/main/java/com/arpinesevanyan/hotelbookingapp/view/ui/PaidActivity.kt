@@ -1,4 +1,4 @@
-package com.arpinesevanyan.hotelbookingapp.ui
+package com.arpinesevanyan.hotelbookingapp.view.ui
 
 
 import android.content.Intent

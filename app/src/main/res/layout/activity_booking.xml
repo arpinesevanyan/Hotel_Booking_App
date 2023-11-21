@@ -5,58 +5,102 @@
     <data>
 
         <variable
-            name="hotel"
-            type="com.arpinesevanyan.hotelbookingapp.data.Hotel" />
-
-        <variable
             name="booking"
-            type="com.arpinesevanyan.hotelbookingapp.data.BookingData" />
+            type="com.arpinesevanyan.hotelbookingapp.model.data.BookingData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.RoomActivity">
+        tools:context=".view.ui.RoomActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@{hotel.name}"
-            app:titleTextColor="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/line2"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@android:color/black" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <RatingBar
-                android:id="@+id/hotelRating"
+                android:id="@+id/ratingBarHotel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/yellowBackground"
                 android:numStars="1"
                 android:progressTint="@color/yellow"
-                android:rating="@{(float)(booking.horating / 2)}" />
+                android:rating="@{(float) (booking.horating / 2)}"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/hotelName"
+                android:id="@+id/textRatingNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{booking.hotel_name}" />
+                android:background="@color/yellowBackground"
+                android:textColor="@color/yellow"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/ratingBarHotel"
+                app:layout_constraintTop_toTopOf="@id/ratingBarHotel" />
 
             <TextView
-                android:id="@+id/hotelAddress"
+                android:id="@+id/textRatingName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{booking.hotel_adress}" />
+                android:background="@color/yellowBackground"
+                android:textColor="@color/yellow"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/textRatingNumber"
+                app:layout_constraintTop_toTopOf="@id/ratingBarHotel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutHotelInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/line2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutRating"
+            app:layout_constraintVertical_bias="0.183">
+
+            <TextView
+                android:id="@+id/textHotelName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{booking.hotel_name}"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textHotelAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@{booking.hotel_adress}"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,7 +111,7 @@
             app:layout_constraintBottom_toTopOf="@id/line3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line1">
+            app:layout_constraintTop_toBottomOf="@id/layoutHotelInfo">
 
             <TextView
                 android:id="@+id/departureCity"
@@ -85,7 +129,7 @@
                 android:id="@+id/bookingDates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{"Даты " + booking.tour_date_start + " - " + booking.tour_date_stop}' />
+                android:text='@{"Даты " + booking.tourDateStart + " - " + booking.tourDateStop}' />
 
             <TextView
                 android:id="@+id/number"
@@ -122,10 +166,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line2">
 
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Информация о покупателе"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/phoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Номер телефона"
                 android:inputType="phone" />
 
@@ -133,8 +189,18 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Адрес электронной почты"
                 android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/info2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Эти данные никому не передаются. После оплаты мы вышли чек на указанный вами номер и почту"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -164,8 +230,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:src="@drawable/ic_add_box"
-                    android:onClick="showTouristFormDialog" />
+                    android:onClick="showTouristFormDialog"
+                    android:src="@drawable/ic_add_box" />
             </FrameLayout>
 
         </LinearLayout>

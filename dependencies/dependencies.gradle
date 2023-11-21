@@ -2,9 +2,9 @@ ext {
     versionOfName = '1.0'
     versionOfCode = 1
 
-    versionOfCompileSdk = 33
+    versionOfCompileSdk = 34
     versionOfMinSdk = 24
-    versionOfTargetSdk = 33
+    versionOfTargetSdk = 34
     versionOfBuildTools = '30.0.2'
 
     versions = [
@@ -27,6 +27,7 @@ ext {
 
             // Architecture Components
             "lifecycleVersion"               : '1.2.1',
+            "lifecycle_version"              : '2.2.0',
 
             // Recyclerview
             "recyclerviewVersion"            : '1.2.1',
@@ -69,6 +70,7 @@ ext {
             lifecycleLiveData                : "androidx.lifecycle:lifecycle-livedata:${versions.lifecycleVersion}",
             lifecycleViewModelKtx            : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycleVersion}",
             lifecycleRuntimeKtx              : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycleVersion}",
+            asLfeData                        :  "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle_version}",
 
     ]
 

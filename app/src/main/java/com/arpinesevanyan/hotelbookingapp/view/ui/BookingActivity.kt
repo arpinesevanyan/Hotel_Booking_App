@@ -1,36 +1,62 @@
-package com.arpinesevanyan.hotelbookingapp.ui
+package com.arpinesevanyan.hotelbookingapp.view.ui
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.lifecycle.Observer
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.arpinesevanyan.hotelbookingapp.R
-import com.arpinesevanyan.hotelbookingapp.api.RetrofitClient
-import com.arpinesevanyan.hotelbookingapp.api.Result
-import com.arpinesevanyan.hotelbookingapp.data.BookingData
+import com.arpinesevanyan.hotelbookingapp.model.network.RetrofitClient
+import com.arpinesevanyan.hotelbookingapp.model.network.Result
+import com.arpinesevanyan.hotelbookingapp.model.data.BookingData
 import com.arpinesevanyan.hotelbookingapp.databinding.ActivityBookingBinding
-import com.arpinesevanyan.hotelbookingapp.model.BookingViewModel
-import com.arpinesevanyan.hotelbookingapp.model.BookingViewModelFactory
-import com.arpinesevanyan.hotelbookingapp.repo.BookingRepository
+import com.arpinesevanyan.hotelbookingapp.model.data.HotelData
+import com.arpinesevanyan.hotelbookingapp.viewmodel.BookingViewModel
+import com.arpinesevanyan.hotelbookingapp.viewmodel.BookingViewModelFactory
+import com.arpinesevanyan.hotelbookingapp.model.repo.BookingRepository
+import com.arpinesevanyan.hotelbookingapp.view.ui.fragment.TouristFormDialogFragment
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 
 class BookingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBookingBinding
     private lateinit var bookingViewModel: BookingViewModel
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityBookingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val bookingId = intent.getIntExtra("bookingId", 0)
 
-        val apiService = RetrofitClient.createBookingApiService()
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Бронирование"
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        val bookingId = intent.getIntExtra("bookingId", 0)
+        val apiService = RetrofitClient.createBookingApiService(this)
         val bookingRepository = BookingRepository(apiService)
+        val viewModelFactory = BookingViewModelFactory(bookingRepository)
+
+        bookingViewModel =
+            ViewModelProvider(this, viewModelFactory).get(BookingViewModel::class.java)
 
         val addTouristButton = findViewById<View>(R.id.addTouristButton)
         val payButton = findViewById<AppCompatButton>(R.id.payButton)
@@ -40,27 +66,19 @@ class BookingActivity : AppCompatActivity() {
             fragment.show(supportFragmentManager, fragment.tag)
         }
 
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-
-        bookingViewModel = ViewModelProvider(
-            this,
-            BookingViewModelFactory(bookingRepository)
-        ).get(BookingViewModel::class.java)
-
         val bookingObserver = Observer<Result<BookingData>> { result ->
             when (result) {
                 is Result.Success -> {
                     val bookingData = result.data
 
-                    binding.hotelRating.rating = bookingData.horating / 2.toFloat()
-                    binding.hotelName.text = bookingData.hotel_name
-                    binding.hotelAddress.text = bookingData.hotel_adress
+                    binding.ratingBarHotel.rating =
+                        bookingData.horating?.let { it / 2.toFloat() } ?: 0f
+                    binding.textHotelName.text = bookingData.hotel_name
+                    binding.textHotelAddress.text = bookingData.hotel_adress
                     binding.departureCity.text = "Вылет из ${bookingData.departure}"
                     binding.arrivalCity.text = "Страна, город ${bookingData.arrival_country}"
                     binding.bookingDates.text =
-                        "Даты ${bookingData.tour_date_start} - ${bookingData.tour_date_stop}"
+                        "Даты ${bookingData.tourDateStart} - ${bookingData.tourDateStop}"
                     binding.number.text = "Кол-во ночей ${bookingData.number_of_nights}"
                     binding.hotel.text = "Отель ${bookingData.hotel_name}"
                     binding.room.text = "Номер ${bookingData.room}"
@@ -69,9 +87,11 @@ class BookingActivity : AppCompatActivity() {
                     binding.fuelCharge.text = "Топливный сбор ${bookingData.fuel_charge}"
                     binding.serviceCharge.text = "Сервисный сбор ${bookingData.service_charge}"
 
-                    binding.totalPrice.text = "Итоговая цена ${bookingData.tour_price + bookingData.fuel_charge + bookingData.service_charge}"
+                    binding.totalPrice.text =
+                        "Итоговая цена ${bookingData.tour_price!! + bookingData.fuel_charge!! + bookingData.service_charge!!}"
 
-                    val totalPrice = bookingData.tour_price + bookingData.fuel_charge + bookingData.service_charge
+                    val totalPrice =
+                        bookingData.tour_price!! + bookingData.fuel_charge + bookingData.service_charge!!
                     payButton.text = "Оплатить: $totalPrice"
 
                     payButton.setOnClickListener {
@@ -79,24 +99,33 @@ class BookingActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
+
                 is Result.Error -> {
-                    val error = result.errorMessage
+                    val error = result.message
                     showErrorDialog(error)
+                }
+
+                Result.Loading -> {
                 }
             }
         }
-        bookingViewModel.bookingData.observe(this, bookingObserver)
-        bookingViewModel.getBookingData(bookingId)
 
+        bookingViewModel.bookingData.observe(this, bookingObserver)
+
+        bookingViewModel.getBookingData(bookingId)
     }
 
     private fun showErrorDialog(errorMessage: String) {
+        Log.e("BookingActivity", "Error: $errorMessage")  // Log the error message
         AlertDialog.Builder(this)
-            .setTitle("Ошибка")
+            .setTitle("Error")
             .setMessage(errorMessage)
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
     }
+
 }
+
+

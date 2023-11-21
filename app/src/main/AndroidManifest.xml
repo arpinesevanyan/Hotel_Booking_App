@@ -16,23 +16,23 @@
         android:theme="@style/Theme.HotelBookingApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.PaidActivity"
+            android:name=".view.ui.PaidActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ui.BookingActivity"
+            android:name=".view.ui.BookingActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ui.RoomActivity"
+            android:name=".view.ui.RoomActivity"
             android:label="Room Activity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".ui.HotelDetailActivity"
+            android:name=".view.ui.HotelDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

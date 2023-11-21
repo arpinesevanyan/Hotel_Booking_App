@@ -1,10 +1,10 @@
-package com.arpinesevanyan.hotelbookingapp.adapter
+package com.arpinesevanyan.hotelbookingapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
-import com.arpinesevanyan.hotelbookingapp.data.RoomX
+import com.arpinesevanyan.hotelbookingapp.model.data.RoomX
 import com.arpinesevanyan.hotelbookingapp.databinding.ItemRoomBinding
 
 class RoomAdapter(private val rooms: List<RoomX>, private val onChooseRoomClickListener: OnChooseRoomClickListener) : RecyclerView.Adapter<RoomAdapter.RoomViewHolder>() {
@@ -40,7 +40,7 @@ class RoomAdapter(private val rooms: List<RoomX>, private val onChooseRoomClickL
 
             val imageUrls = room.image_urls
 
-            val imageSliderAdapter = ImageRoomSliderAdapter(imageUrls)
+            val imageSliderAdapter = imageUrls?.let { ImageRoomSliderAdapter(it) }
             binding.roomViewPager.adapter = imageSliderAdapter
         }
 

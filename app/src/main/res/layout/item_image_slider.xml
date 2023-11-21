@@ -6,7 +6,7 @@
 
         <variable
             name="hotel"
-            type="com.arpinesevanyan.hotelbookingapp.data.Hotel" />
+            type="com.arpinesevanyan.hotelbookingapp.model.data.HotelData" />
     </data>
 
     <ImageView

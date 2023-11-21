@@ -1,12 +1,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="room"
-            type="com.arpinesevanyan.hotelbookingapp.data.RoomX" />
+            type="com.arpinesevanyan.hotelbookingapp.model.data.RoomX" />
     </data>
 
     <ImageView

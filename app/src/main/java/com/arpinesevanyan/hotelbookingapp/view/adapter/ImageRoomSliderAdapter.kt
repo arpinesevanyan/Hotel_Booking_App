@@ -1,4 +1,4 @@
-package com.arpinesevanyan.hotelbookingapp.adapter
+package com.arpinesevanyan.hotelbookingapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

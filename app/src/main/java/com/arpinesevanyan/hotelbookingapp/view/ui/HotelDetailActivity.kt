@@ -1,30 +1,39 @@
-package com.arpinesevanyan.hotelbookingapp.ui
+package com.arpinesevanyan.hotelbookingapp.view.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.arpinesevanyan.hotelbookingapp.adapter.ImageSliderAdapter
-import com.arpinesevanyan.hotelbookingapp.api.Result
-import com.arpinesevanyan.hotelbookingapp.api.RetrofitClient
-import com.arpinesevanyan.hotelbookingapp.data.Hotel
+import com.arpinesevanyan.hotelbookingapp.R
+import com.arpinesevanyan.hotelbookingapp.view.adapter.ImageSliderAdapter
+import com.arpinesevanyan.hotelbookingapp.model.network.Result
+import com.arpinesevanyan.hotelbookingapp.model.network.RetrofitClient
+import com.arpinesevanyan.hotelbookingapp.model.data.HotelData
 import com.arpinesevanyan.hotelbookingapp.databinding.ActivityHotelDetailBinding
-import com.arpinesevanyan.hotelbookingapp.model.HotelViewModel
-import com.arpinesevanyan.hotelbookingapp.model.HotelViewModelFactory
-import com.arpinesevanyan.hotelbookingapp.repo.HotelRepository
+import com.arpinesevanyan.hotelbookingapp.viewmodel.HotelViewModel
+import com.arpinesevanyan.hotelbookingapp.viewmodel.HotelViewModelFactory
+import com.arpinesevanyan.hotelbookingapp.model.repo.HotelRepository
+import com.arpinesevanyan.hotelbookingapp.view.ui.fragment.HotelBottomSheetFragment
 
 class HotelDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHotelDetailBinding
     private lateinit var viewModel: HotelViewModel
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHotelDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Отель"
 
         val hotelId = intent.getIntExtra("hotel_id", 0)
         val apiService = RetrofitClient.create()
@@ -33,15 +42,14 @@ class HotelDetailActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HotelViewModel::class.java)
 
-        val hotelDetailsObserver = Observer<Result<Hotel>> { result ->
+        val hotelDetailsObserver = Observer<Result<HotelData>> { result ->
             when (result) {
                 is Result.Success -> {
                     val hotel = result.data
 
                     val imageUrls = hotel.image_urls
-                    Log.d("Debug", "Image URLs: $imageUrls")
 
-                    val imageSliderAdapter = ImageSliderAdapter(imageUrls)
+                    val imageSliderAdapter = imageUrls?.let { ImageSliderAdapter(it) }
                     binding.viewPager.adapter = imageSliderAdapter
 
                     binding.buttonChooseRoom.setOnClickListener {
@@ -52,17 +60,23 @@ class HotelDetailActivity : AppCompatActivity() {
 
                     binding.textHotelName.text = hotel.name
                     binding.textHotelAddress.text = hotel.adress
-                    binding.ratingBarHotel.rating = hotel.rating / 2.toFloat()
-                    binding.textHotelPrice.text = hotel.price_for_it
-                    binding.textHotelDescription.text = hotel.about_the_hotel.description
+                    binding.ratingBarHotel.rating = hotel.rating?.let { it / 2.toFloat() } ?: 0f
+                    binding.textRatingName.text = hotel.rating_name ?: ""
+                    binding.textRatingNumber.text = hotel.rating.toString()
+                    binding.textHotelPrice.text = "от ${hotel.minimal_price ?: ""}${hotel.price_for_it ?: ""}"
 
-                    val peculiarities = hotel.about_the_hotel.peculiarities
-                    val peculiaritiesText = peculiarities.joinToString(", ")
-                    binding.textHotelPeculiarities.text = peculiaritiesText
+                    binding.textHotelName.setOnClickListener {
+                        val bottomSheetFragment = HotelBottomSheetFragment.newInstance(hotel)
+                        bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
+                    }
                 }
+
                 is Result.Error -> {
-                    val error = result.errorMessage
+                    val error = result.message
                     showErrorDialog(error)
+                }
+                Result.Loading -> {
+
                 }
             }
         }
@@ -82,3 +96,4 @@ class HotelDetailActivity : AppCompatActivity() {
             .show()
     }
 }
+

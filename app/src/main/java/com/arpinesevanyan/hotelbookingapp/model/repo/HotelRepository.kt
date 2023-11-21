@@ -1,11 +1,11 @@
-package com.arpinesevanyan.hotelbookingapp.repo
+package com.arpinesevanyan.hotelbookingapp.model.repo
 
-import com.arpinesevanyan.hotelbookingapp.api.ApiService
-import com.arpinesevanyan.hotelbookingapp.api.Result
-import com.arpinesevanyan.hotelbookingapp.data.Hotel
+import com.arpinesevanyan.hotelbookingapp.model.network.ApiService
+import com.arpinesevanyan.hotelbookingapp.model.network.Result
+import com.arpinesevanyan.hotelbookingapp.model.data.HotelData
 
 class HotelRepository(private val apiService: ApiService)  {
-     suspend fun getHotelDetails(hotelId: Int): Result<Hotel> {
+    suspend fun getHotelDetails(hotelId: Int): Result<HotelData> {
         return try {
             val response = apiService.getHotelDetails(hotelId)
             if (response.isSuccessful) {

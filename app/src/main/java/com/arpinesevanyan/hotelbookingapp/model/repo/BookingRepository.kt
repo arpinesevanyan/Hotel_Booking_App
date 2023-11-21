@@ -1,8 +1,8 @@
-package com.arpinesevanyan.hotelbookingapp.repo
+package com.arpinesevanyan.hotelbookingapp.model.repo
 
-import com.arpinesevanyan.hotelbookingapp.api.BookingApiService
-import com.arpinesevanyan.hotelbookingapp.api.Result
-import com.arpinesevanyan.hotelbookingapp.data.BookingData
+import com.arpinesevanyan.hotelbookingapp.model.network.BookingApiService
+import com.arpinesevanyan.hotelbookingapp.model.network.Result
+import com.arpinesevanyan.hotelbookingapp.model.data.BookingData
 
 class BookingRepository(private val apiService: BookingApiService) {
     suspend fun getBookingData(id: Int): Result<BookingData> {
@@ -23,4 +23,5 @@ class BookingRepository(private val apiService: BookingApiService) {
         }
     }
 }
+
 

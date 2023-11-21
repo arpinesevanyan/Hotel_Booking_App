@@ -1,4 +1,4 @@
-package com.arpinesevanyan.hotelbookingapp.adapter
+package com.arpinesevanyan.hotelbookingapp.view.adapter
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -15,3 +15,4 @@ object ImageBindingAdapters {
         }
     }
 }
+
